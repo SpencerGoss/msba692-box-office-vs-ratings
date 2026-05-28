@@ -1,0 +1,49 @@
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | Box Office vs. Ratings ETL
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | STAGE 1/5  EXTRACT
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | Extracting from local cache (pass --refresh to re-pull live).
+2026-05-28 22:13:35 | INFO    | Loaded 6008 cached films + 19 genres from data/raw.
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | STAGE 2/5  TRANSFORM & CLEAN
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | Cleaning 6008 raw film rows...
+2026-05-28 22:13:35 | INFO    |   clean: nulled     4 implausible runtimes (kept the films) -- outside [1, 1000] min
+2026-05-28 22:13:35 | INFO    | Cleaning complete: 6008 -> 6008 rows (0 dropped total).
+2026-05-28 22:13:35 | INFO    | Derived metrics added: profit, roi, profit_margin, budget_tier, performance, decade.
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | STAGE 3/5  VALIDATE  (data-quality checks)
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    |   [PASS] non_empty                  6008 films after cleaning
+2026-05-28 22:13:35 | INFO    |   [PASS] no_null_required           null counts {'tmdb_id': 0, 'title': 0, 'budget': 0, 'revenue': 0, 'vote_count': 0}
+2026-05-28 22:13:35 | INFO    |   [PASS] no_duplicate_tmdb_id       0 duplicate tmdb_id
+2026-05-28 22:13:35 | INFO    |   [PASS] dtypes                     budget/revenue/vote_count int, vote_average float
+2026-05-28 22:13:35 | INFO    |   [PASS] ranges                     budget>0, revenue>0, vote_count>=100 hold
+2026-05-28 22:13:35 | INFO    |   [PASS] vote_average_range         all in [0.0, 10.0]
+2026-05-28 22:13:35 | INFO    |   [PASS] ref_integrity_film         0 links reference a dropped film (pruned before load)
+2026-05-28 22:13:35 | INFO    |   [PASS] ref_integrity_genre        0 links reference an unknown genre_id
+2026-05-28 22:13:35 | INFO    | All data-quality checks passed.
+2026-05-28 22:13:35 | INFO    | Built genre x decade summary: 56 rows.
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:35 | INFO    | STAGE 4/5  LOAD
+2026-05-28 22:13:35 | INFO    | ======================================================================
+2026-05-28 22:13:36 | INFO    | Schema applied (3 tables + v_films_enriched view).
+2026-05-28 22:13:36 | INFO    | Upserted 19 genres.
+2026-05-28 22:13:39 | INFO    | Upserted 6008 films + 15811 film-genre links.
+2026-05-28 22:13:39 | INFO    |   post-load counts: {'films': 6008, 'genres': 19, 'film_genres': 15811}
+2026-05-28 22:13:39 | INFO    |   [PASS] row_count_reconciliation  films table == 6008 loaded rows
+2026-05-28 22:13:39 | INFO    | Exported films_for_powerbi: 6008 rows -> data/films_for_powerbi.csv
+2026-05-28 22:13:39 | INFO    | Exported genre_decade_summary: 56 rows -> data/genre_decade_summary.csv
+2026-05-28 22:13:39 | INFO    | ======================================================================
+2026-05-28 22:13:39 | INFO    | STAGE 5/5  VERIFY  (row-count reconciliation)
+2026-05-28 22:13:39 | INFO    | ======================================================================
+2026-05-28 22:13:39 | INFO    |   extracted (raw films)      : 6008
+2026-05-28 22:13:39 | INFO    |   cleaned   (passed QA)      : 6008
+2026-05-28 22:13:39 | INFO    |   loaded    (films in DB)    : 6008
+2026-05-28 22:13:39 | INFO    |   CSV rows  (films export)   : 6008
+2026-05-28 22:13:39 | INFO    |   [PASS] CSV reconciliation  enriched CSV == cleaned films
+2026-05-28 22:13:39 | INFO    | ======================================================================
+2026-05-28 22:13:39 | INFO    | ETL COMPLETE in 4.0s  (DB load: yes)
+2026-05-28 22:13:39 | INFO    | ======================================================================

@@ -1,0 +1,38 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Data outputs (large, regeneratable)
+*.csv
+*.parquet
+*.sqlite
+*.sqlite3
+*.db
+data/raw/
+data/processed/
+# ...but keep the finalized analytics outputs as sample outputs
+!data/films_for_powerbi.csv
+!data/genre_decade_summary.csv
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
